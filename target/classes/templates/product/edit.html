@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Product</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .edit-container {
+            background-color: #fff;
+            padding: 30px 40px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            width: 500px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin: 12px 0 5px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        span {
+            color: red;
+            font-size: 0.85em;
+        }
+
+        p {
+            font-size: 14px;
+            margin: 10px 0;
+        }
+
+        strong {
+            display: inline-block;
+            width: 140px;
+            color: #444;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1em;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<div class="edit-container">
+    <h2>Edit Product</h2>
+
+    <form th:action="@{'/product/edit/' + ${productForm.id}}" th:object="${productForm}" method="post">
+
+        <p><strong>ID:</strong> <span th:text="*{id}"></span></p>
+        <input type="hidden" th:field="*{id}" />
+
+        <label>Name:
+            <input type="text" th:field="*{name}" />
+            <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+        </label>
+
+        <label>Origin:
+            <input type="text" th:field="*{origin}" />
+            <span th:if="${#fields.hasErrors('origin')}" th:errors="*{origin}"></span>
+        </label>
+
+        <label>Price:
+            <input type="number" step="0.1" th:field="*{price}" />
+            <span th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></span>
+        </label>
+
+        <label>Discount:
+            <input type="number" step="0.1" th:field="*{discount}" />
+            <span th:if="${#fields.hasErrors('discount')}" th:errors="*{discount}"></span>
+        </label>
+
+        <p><strong>Produce Date:</strong>
+            <span th:text="${#temporals.format(productForm.produceDate, 'yyyy-MM-dd')}"></span>
+        </p>
+        <input type="hidden" th:field="*{produceDate}" />
+
+        <label>Category:
+            <select th:field="*{categoryId}">
+                <option th:each="cat : ${categories}" th:value="${cat.id}" th:text="${cat.name}"></option>
+            </select>
+            <span th:if="${#fields.hasErrors('categoryId')}" th:errors="*{categoryId}"></span>
+        </label>
+
+        <p><strong>Create Date:</strong>
+            <span th:text="${#temporals.format(productForm.createDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
+        </p>
+        <p><strong>Update Date:</strong>
+            <span th:text="${#temporals.format(productForm.updateDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
+        </p>
+
+        <button type="submit">Update</button>
+    </form>
+
+    <a th:href="@{/product/list}">← Back to Product List</a>
+</div>
+
+</body>
+</html>
