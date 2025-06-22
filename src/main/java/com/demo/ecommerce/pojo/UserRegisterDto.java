@@ -33,4 +33,7 @@ public class UserRegisterDto {
     @NotBlank(message = "Please confirm your password")
     private String confirmPassword;
 
+    @NotBlank(message = "Please specify your role")
+    private String role;
+
 }

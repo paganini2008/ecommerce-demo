@@ -2,11 +2,13 @@ package com.demo.ecommerce.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.reactive.result.view.Rendering;
 import org.springframework.web.server.ServerWebExchange;
+import com.demo.ecommerce.utils.SecurityUtils;
 import reactor.core.publisher.Mono;
 
 /**
@@ -36,6 +38,19 @@ public class ErrorPageController {
         } else if (status == HttpStatus.FORBIDDEN) {
             message = "You do not have permission to access this page.";
         }
-        return Mono.just(Rendering.view("error").modelAttribute("msg", message).build());
+        StringBuilder str = new StringBuilder(message);
+        return getUserDesc().map(userDesc -> {
+            str.append(userDesc);
+            return Rendering.view("error").modelAttribute("msg", str.toString()).build();
+        });
+    }
+
+    private Mono<String> getUserDesc() {
+        return SecurityUtils.getAuthentication().map(auth -> {
+            String username = auth.getName();
+            String role = auth.getAuthorities().stream().findFirst()
+                    .map(GrantedAuthority::getAuthority).orElse("N/A");
+            return String.format(", Current User: %s, Role: %s", username, role);
+        }).defaultIfEmpty(", Current User: anonymous");
     }
 }

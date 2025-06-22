@@ -39,6 +39,9 @@ public class User {
     @Column(name = "password", nullable = false, length = 255)
     private String password;
 
+    @Column(name = "role", nullable = false, length = 45)
+    private String role;
+
     @Column(name = "active", nullable = true, columnDefinition = "BOOLEAN DEFAULT TRUE")
     private Boolean active;
 

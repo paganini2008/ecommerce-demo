@@ -30,9 +30,9 @@ public class ReactiveUserDetailsServiceImpl implements ReactiveUserDetailsServic
                         return Mono.error(new UsernameNotFoundException(
                                 "User not found for name: " + username));
                     }
-                    return Mono
-                            .just(User.withUsername(user.getUsername()).password(user.getPassword())
-                                    .authorities("ROLE_AMDIN").disabled(!user.getActive()).build());
+                    return Mono.just(User.withUsername(user.getUsername())
+                            .password(user.getPassword()).authorities(user.getRole())
+                            .disabled(!user.getActive()).build());
                 });
     }
 

@@ -107,7 +107,15 @@
             <input type="password" th:field="*{confirmPassword}" />
             <span th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></span>
         </label>
-
+        
+		<label>Role:
+		    <select th:field="*{role}">
+		        <option value="" disabled selected>Select Role</option>
+		        <option value="ROLE_ADMIN">Admin</option>
+		        <option value="ROLE_USER">User</option>
+		    </select>
+		    <span th:if="${#fields.hasErrors('role')}" th:errors="*{role}"></span>
+		</label>
         <button type="submit">Register</button>
     </form>
 

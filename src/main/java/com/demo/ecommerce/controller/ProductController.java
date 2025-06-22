@@ -2,6 +2,7 @@ package com.demo.ecommerce.controller;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -36,6 +37,7 @@ public class ProductController {
     private final ProductService productService;
     private final CategoryService categoryService;
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     @GetMapping("/list")
     public Mono<Rendering> productListPage(Model model) {
         return Mono.fromCallable(() -> {
@@ -45,6 +47,7 @@ public class ProductController {
         }).subscribeOn(Schedulers.boundedElastic());
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/create")
     public Mono<Rendering> createProductPage(Model model) {
         return Mono.fromCallable(() -> {
@@ -62,6 +65,7 @@ public class ProductController {
      * @param model
      * @return
      */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/create")
     public Mono<Rendering> createProduct(@Valid @ModelAttribute("productForm") ProductDto form,
             BindingResult bindingResult, Model model) {
@@ -76,6 +80,7 @@ public class ProductController {
                 .thenReturn(Rendering.redirectTo("/product/list").build());
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/edit/{id}")
     public Mono<Rendering> editProductPage(@PathVariable("id") Long id, Model model) {
         return Mono.fromCallable(() -> {
@@ -97,6 +102,7 @@ public class ProductController {
      * @param model
      * @return
      */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/edit/{id}")
     public Mono<Rendering> editProduct(@PathVariable("id") Long id,
             @Valid @ModelAttribute("productForm") ProductDto form, BindingResult bindingResult,
@@ -119,6 +125,7 @@ public class ProductController {
      * @param model
      * @return
      */
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     @GetMapping("/view/{id}")
     public Mono<Rendering> viewProduct(@PathVariable("id") Long id, Model model) {
         return Mono.fromCallable(() -> {
@@ -133,6 +140,7 @@ public class ProductController {
      * @param id
      * @return
      */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/delete/{id}")
     public Mono<Rendering> deleteProduct(@PathVariable("id") Long id) {
         return Mono.fromRunnable(() -> productService.deleteById(id))

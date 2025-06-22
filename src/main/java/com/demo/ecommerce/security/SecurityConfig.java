@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
+import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
@@ -24,6 +25,7 @@ import lombok.RequiredArgsConstructor;
  * @Date: 20/06/2025
  * @Version 1.0.0
  */
+@EnableReactiveMethodSecurity
 @EnableWebFluxSecurity
 @Configuration(proxyBeanMethods = false)
 @RequiredArgsConstructor
@@ -50,11 +52,10 @@ public class SecurityConfig {
                     exchange.getResponse().getHeaders().setLocation(URI.create("/error?code=403"));
                     return exchange.getResponse().setComplete();
                 }))
-                .authorizeExchange(
-                        exchange -> exchange
-                                .pathMatchers("/", "/auth/**", "/error", "/v3/api-docs/**",
-                                        "/swagger-ui.html")
-                                .permitAll().anyExchange().authenticated())
+                .authorizeExchange(exchange -> exchange
+                        .pathMatchers("/", "/auth/**", "/error", "/v3/api-docs/**", "/css/**",
+                                "/js/**", "/swagger-ui.html")
+                        .permitAll().anyExchange().authenticated())
                 .addFilterAt(jwtAuthFilter, SecurityWebFiltersOrder.AUTHENTICATION).build();
     }
 
