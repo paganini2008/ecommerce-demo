@@ -1,4 +1,4 @@
-# Product Management System
+# Product Management System (Demo)
 
 A simple web-based product management system built with Spring Boot 3, supporting full CRUD operations, user authentication using JWT, and a minimal UI using Thymeleaf.
 
@@ -12,8 +12,8 @@ A simple web-based product management system built with Spring Boot 3, supportin
 - **Thymeleaf UI**: Simple and responsive user interface for managing products.
 - **Exception Handling**: Centralized error handling with custom error pages.
 - **Profile-based Configuration**:
-  - `dev`: Uses H2 in-memory database.
-  - `test`: Uses PostgreSQL database.
+  - `dev`: For quick test with H2
+  - `test`: For test with PostgreSQL
 
 ---
 
@@ -23,9 +23,11 @@ A simple web-based product management system built with Spring Boot 3, supportin
 | -------------- | ----------------- |
 | Java           | 17                |
 | Spring Boot    | 3.4.7             |
-| Spring WebFlux | 3.1.x             |
-| Thymeleaf      | 3.x               |
-| PostgreSQL     | 15.x              |
+| Spring WebFlux | 6.2.x             |
+| Hibernate      | 6.6.x             |
+| Spring Security| 3.4.x             |
+| Thymeleaf      | 3.1.x             |
+| PostgreSQL     | 14.x              |
 | H2 Database    | 2.x (in-memory)   |
 | JWT            | Nimbus JOSE + JWT |
 | Maven          | 3.8+              |
@@ -34,7 +36,16 @@ A simple web-based product management system built with Spring Boot 3, supportin
 
 ## Build & Run
 
-### Run with H2 (development mode)
+### Run with H2 (dev  mode)
 
 ```bash
 ./mvnw spring-boot:run -Dspring.profiles.active=dev
+```
+
+### Run with PostgreSQL (test mode)
+```bash
+./mvnw spring-boot:run -Dspring.profiles.active=test
+```
+
+### Run and Test
+http://localhost:8090/
